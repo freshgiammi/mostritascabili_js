@@ -1,0 +1,74 @@
+body{
+    font-family: 'Open Sans', sans-serif;
+}
+
+#map,
+#splash{ 
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+#profile,
+#ranking { 
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 130%;
+}
+
+.c100{
+    height: 3.4vh;
+    width: 3.4vh;
+}
+
+#ranking_image_map, #image_rank, #user_button_save, #user_button_upload{
+    height: 9vh;
+    width: 9vh;
+} 
+
+#user_data,
+#rank_item{
+    border-radius: 25px; 
+    background-color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+#xp_text,
+#lp_text{
+    color: black;
+}
+
+.marker{
+    display: block;
+    cursor: pointer;
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    background-size: 100% 100%;
+}
+
+#profile,
+#ranking{
+    background-image: linear-gradient(#544858, rgba(0,0,0,0))
+}
+
+#splashscreen{
+    background-color: #544858;
+    width: 100%;
+    height: 100%;
+}
+
+#ranking_title,
+#profile_title{
+    color: white;
+}
+.img-circle{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}

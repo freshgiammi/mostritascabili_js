@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <!-- <meta http-equiv="Content- Security-Policy" content="default-src * 'unsafe-inline' gap:; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+    <allow-navigation href="*" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+    <!-- jQuery -->
+    <script src='lib/jquery-3.4.1.min.js'></script>
+
+    <!-- MAPBOX -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css" rel="stylesheet" />
+    
+    <!-- Materialize CSS Framework-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+    <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="css/index.css" /> 
+    <link rel="stylesheet" type="text/css" href="css/circle.css" /> 
+
+    <title>Mostri Tascabili</title>
+</head>
+
+<body>
+    <div class="app">
+        <div id="splash" class="d-inline">
+            <div id="splashscreen"></div>
+        </div>
+        <div id="mappage" class="d-none">
+            <div id='map'> 
+                <!-- Bottom AppBar -->
+                <ul class="nav nav-tabs fixed-bottom" style="background-color: #544858;" >
+                    <li class="nav-item">
+                    <a class="nav-link active" style="color: white;" onclick="show('mappage')"><i class="material-icons">map</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: white;" onclick="show('profile')"><i class="material-icons">person</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: white;"onclick="show('ranking')"><i class="material-icons">insert_chart</i></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- informazioni in sovraimpressione -->
+            <div class="m-3 d-flex flex-row" id="container">
+                <div id="lp_circle"class="c100 small green">
+                    <span id="lp_text"></span>
+                    <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                    </div>
+                </div>            
+                <div id="xp_circle" class="c100 small red p100">
+                    <span id="xp_text"></span>
+                    <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="profile" class="d-none">
+            <!-- Bottom AppBar -->
+            <ul class="nav nav-tabs fixed-bottom" style="background-color: #544858;">
+                <li class="nav-item">
+                <a class="nav-link" style="color: white;" onclick="show('mappage')"><i class="material-icons">map</i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" style="color: white;" onclick="show('profile')"><i class="material-icons">person</i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" onclick="show('ranking')"><i class="material-icons">insert_chart</i></a>
+                </li>
+            </ul>
+            
+            <div class="col text-center p-4" id="col">
+                <div class="row justify-content-center my-3">
+                    <h1 id="profile_title">My Profile</h1>
+                </div>
+                    <img class="img-circle my-4" onclick="changeProfilePic();" src="data:image/png;base64,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" id="user_image"/>
+                <div class="row justify-content-center my-3">
+                    <h2 id="user_username">USERNAME_FIELD</h2>
+                </div>
+                <div class="row justify-content-around mx-5">
+                    <div class="col text-center m-3 p-1">
+                        <span class="align-middle mx-1">LP</span>
+                    </div> 
+                    <div class="col text-center m-3 p-1">
+                        <span class="align-middle mx-1">XP</span>
+                    </div> 
+                </div>
+                <div id="user_data" class="mx-5 mt-1"> 
+                    <div class="row justify-content-around">
+                        <div class="col text-center m-3 p-1">
+                            <span class="align-middle mx-1" id="user_lp"></span>
+                        </div> 
+                        <div style="border-left: 1px solid gray;"class="my-4"></div> 
+                        <div class="col text-center m-3 p-1">
+                            <span class="align-middle mx-1" id="user_xp"></span>
+                        </div> 
+                    </div>
+                </div>
+                <button type="button" class="btn btn-raised btn-danger my-5" id="button_rename" onclick="rename()">Change Username</button>
+            </div>
+
+        </div>
+        <div id='ranking' class="d-none">
+            <div class="container p-4">
+                <div class="row justify-content-center align-items-center mt-1 mb-3 d-flex">
+                    <h2 id="ranking_title">Leaderboard</h2>
+                </div>
+                <ul class="list-group list-group-flush" id="ranking_list"></ul>  
+                <br>
+                <br>
+            </div> 
+            <!-- Bottom AppBar -->
+            <ul class="nav nav-tabs fixed-bottom" style="background-color: #544858;" >
+                <li class="nav-item">
+                <a class="nav-link" style="color: white;" onclick="show('mappage')"><i class="material-icons">map</i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" onclick="show('profile')"><i class="material-icons">person</i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" style="color: white;" onclick="show('ranking')"><i class="material-icons">insert_chart</i></a>
+                </li>
+            </ul>
+        </div>
+        <div id="mapobjectinfo" class="d-none">
+            <div class="container p-4">
+
+                <div class="row justify-content-center mt-3">
+                    <img class="rounded-circle img-fluid img-thumbnail w-50 mt-2" src="" id="obj_image"/>
+                </div>
+
+                <div class="row justify-content-center mt-3">
+                    <h1 class="text-center font-weight-bold" id="obj_name"></h1>
+                </div>
+
+                <div class="row justify-content-around align-items-center my-5">
+                    <div class="col text-center p-1">
+                        <h3 class="text-center" id="obj_size"></h3>
+                    </div> 
+                </div>
+
+                <div class="row justify-content-center">
+                    <h5 class="text-center font-weight-bold" id="obj_fight"></h5>
+                </div>
+
+                <div class="row justify-content-center">
+                    <button type="button" style="margin: 13px;" class="btn btn-lg btn-raised btn-secondary" onclick="show('mappage')">Go back</button>
+                    <button type="button" style="margin: 13px;" class="btn btn-lg btn-raised btn-danger" id="button_action"></button>
+                </div>
+            </div>
+        </div>
+        <div id="result" class="d-none">
+            <div class="container p-4">
+                <div class="row justify-content-center mt-3">
+                    <div class="col text-center mx-3">
+                        <h2 id="life_result">You died/You survived/You grab this candy</h2>
+                    </div>
+                </div>
+
+                <div class="row justify-content-around my-5">
+                    <div class="col text-center">
+                        <h3 id="lp_result">LP</h3>
+                    </div>
+                    <div class="col text-center">
+                        <h3 id="xp_result">XP</h3>
+                    </div> 
+                </div>
+
+                <div class="row justify-content-center mt-3">
+                    <div class="col text-center mx-3">
+                        <button type="button" style="margin: 13px;" class="btn btn-lg btn-raised btn-secondary" onclick="show('mappage')">Go back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+
+</html>
