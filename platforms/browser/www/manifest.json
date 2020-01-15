@@ -1,9 +1,9 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "helloworld",
-  "short_name": "helloworld",
-  "version": "com.phonegap.helloworld",
+  "name": "Mostri Tascabili",
+  "short_name": "Mostri Tascabili",
+  "version": "com.freshgiammi.mostritascabili",
   "description": "Hello World sample application that responds to the deviceready event.",
   "author": "PhoneGap Team",
   "icons": [],

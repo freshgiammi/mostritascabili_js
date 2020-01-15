@@ -3,7 +3,11 @@ body{
 }
 
 #map,
-#splash{ 
+#splash,
+#ranking,
+#mapobjectinfo,
+#result,
+.app{ 
     position: absolute;
     top: 0;
     bottom: 0;
@@ -11,12 +15,13 @@ body{
 }
 
 #profile,
-#ranking { 
+#ranking{ 
     position: absolute;
     top: 0;
     bottom: 0;
     width: 100%;
-    margin-bottom: 130%;
+    margin-bottom: 80%;
+    background-image: linear-gradient(#544858, rgba(0,0,0,0));
 }
 
 .c100{
@@ -50,9 +55,9 @@ body{
     background-size: 100% 100%;
 }
 
-#profile,
-#ranking{
-    background-image: linear-gradient(#544858, rgba(0,0,0,0))
+#result,
+#mapobjectinfo{
+    background-image: linear-gradient(#544858, rgba(0,0,0,0));
 }
 
 #splashscreen{
@@ -62,13 +67,34 @@ body{
 }
 
 #ranking_title,
-#profile_title{
+#profile_title,
+#life_result,
+#xp_result,
+#lp_result,
+#obj_name,
+#obj_size,
+#obj_fight{
     color: white;
 }
+
+#result_icon{
+    width: 150px;
+    height: 150px;
+}
+
 .img-circle{
     border-radius: 50%;
     width: 200px;
     height: 200px;
     object-fit: cover;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+#splash_logo{
+    position: fixed;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
 }

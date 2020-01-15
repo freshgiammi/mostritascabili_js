@@ -119,6 +119,10 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        if (checkConnection() == 'No network connection'){
+            alert("You're not connected to the internet! Mostri Tascabili requires an active network connection.");
+            //navigator.app.exitApp(); //Close App.
+        }        
         
         // USED FOR MOBILE
         //localStorage.setItem('session_id', 'VkCzzcwmJRYCHd3v'); 
@@ -240,7 +244,7 @@ function getMapObjects(){
         data: JSON.stringify({session_id :localStorage.getItem("session_id")}),
         dataType: 'json',
         success: function(result) {
-            console.log("Successful ajax request");
+            console.log("Successful ajax getMapObjects request");
             let mapobjects = result.mapobjects;
             console.log(mapobjects);
             if (mapobjectmodel.getMapObjects.length != 0){
@@ -270,15 +274,14 @@ function getMapObjects(){
 // Loads Markers on map; called from getMapObjects
 function mapUpdater(){
     let mapobjects = mapobjectmodel.getMapObjects;
-    console.log(mapobjectmodel.getMapObjects.length)
+    //console.log(currentMarkers.length);
     if (currentMarkers.length != 0){
-        for (var i = currentMarkers.length - 1; i >= 0; i--) {
-            currentMarkers[i].remove();
-          }
+            currentMarkers = [];
         console.log("Updating markers")
     }
+
     for (let i = 0; i<mapobjects.length; i++){
-        console.log(mapobjects[i]);
+        //console.log(mapobjects[i]);
         let element = document.createElement("div");
         element.className = 'marker';
         element.id = mapobjects[i].id;
@@ -319,10 +322,9 @@ function mapObjectInfo(id) {
     for(i=0; i<mapobjectmodel.getMapObjects.length; i++) {
         if (mapobjectmodel.getMapObjects[i].id == id) {
             mapobject = mapobjectmodel.getMapObjects[i];
-            console.log(mapobject)
+            console.log("Fighting: "+mapobject);
         }
     }
-    show('mapobjectinfo'); 
     // Chiamata per scaricare l'immagine e impostare tutti i campi
     $.ajax({
         method: 'post',
@@ -335,15 +337,21 @@ function mapObjectInfo(id) {
             document.getElementById("obj_image").src = "data:image/(png|jpg);base64," + result.img;
             let size = mapobject.size;
             if (size == "L") {
-                document.getElementById("obj_size").innerHTML = "Large";
+                document.getElementById("obj_size").innerHTML = "Size: Large";
+                document.getElementById("obj_lp").innerHTML = "50-100";
+                document.getElementById("obj_xp").innerHTML = "10";
             } else if (size == "M") {
-                document.getElementById("obj_size").innerHTML = "Medium";
+                document.getElementById("obj_size").innerHTML = "Size: Medium";
+                document.getElementById("obj_lp").innerHTML = "25-75";
+                document.getElementById("obj_xp").innerHTML = "3";
             } else {
-                document.getElementById("obj_size").innerHTML = "Small";
+                document.getElementById("obj_size").innerHTML = "Size: Small";
+                document.getElementById("obj_lp").innerHTML = "0-50";
+                document.getElementById("obj_xp").innerHTML = "1";
             }
 
             document.getElementById("button_action").addEventListener('click', function() {
-                mapObjectResult(id);
+                isStillAvailable(id);
             });
             /*
             if (mapobject.type == "CA") {
@@ -371,10 +379,14 @@ function mapObjectInfo(id) {
         if (mapobject.type == "CA") {
                 document.getElementById("obj_fight").innerHTML = "Wanna eat this candy?";
                 document.getElementById("button_action").innerHTML = "Eat!"
+                document.getElementById("result_lp_field").innerHTML = "Potential LP Gain"
+                document.getElementById("obj_xp").innerHTML = "0"; // Candies give no XP Gain.
         } else {
             document.getElementById("obj_fight").innerHTML = "Wanna fight this monster?";
             document.getElementById("button_action").innerHTML = "Fight!"
+            document.getElementById("result_lp_field").innerHTML = "Potential LP Loss"
         }
+        show('mapobjectinfo'); //Page loaded; show to user
         },
         error: function(error){
             console.error(error);
@@ -414,7 +426,6 @@ function toDegrees(radians) {
 //Show result after fight/eat
 function mapObjectResult(id) { 
 
-    // TODO: Check if mapobject is still here
     // Copy mapobjectmodel, compare with new one. Find a way to get answer before executing rest of code
     var mapobject = "";
     for(i=0; i<mapobjectmodel.getMapObjects.length; i++) {
@@ -422,7 +433,7 @@ function mapObjectResult(id) {
             mapobject = mapobjectmodel.getMapObjects[i];        
         }
     }
-    show('result'); 
+
     // Chiamata per combattere
     $.ajax({
         method: 'post',
@@ -431,33 +442,46 @@ function mapObjectResult(id) {
         dataType: 'json',
         success: function(result) {
             console.log("Successful ajax fighteat request");
+            console.log(result)
             let died = result.died;
             profilemodel.getProfile[0].xp = result.xp;
             profilemodel.getProfile[0].lp = result.lp;
             if (died) {
-                document.getElementById("life_result").innerHTML = "You died and now you have";
+                document.getElementById("life_result").innerHTML = "Oh no, you died!";
                 // TODO: Death icon, hide XP & LP
+                document.getElementById("result_data").style.display = "none";            
+                document.getElementById("result_icon").setAttribute("src", "res/icon/svg/death.svg");
             }
-            else {
-                document.getElementById("life_result").innerHTML = "Congratulations! You now have: ";
+            else if (mapobject.type =="MO") {
+                document.getElementById("life_result").innerHTML = "Congratulations, you defeated the monster! You now have:";
                 document.getElementById("xp_result").innerHTML = profilemodel.getProfile[0].xp + "XP";
                 document.getElementById("lp_result").innerHTML = profilemodel.getProfile[0].lp + "LP";
+                document.getElementById("result_data").style.display = "flex";
                 // TODO: Win icon
-
-                //Clone the node to keep the button_action without the old, just used eventListener.
-                var clone = document.getElementById("button_action").cloneNode(true);
-                document.getElementById("button_action").parentNode.replaceChild(clone, document.getElementById("button_action"));
-
-                getMapObjects();
-
+                document.getElementById("result_icon").setAttribute("src", "res/icon/svg/success.svg");
+            } else {
+                document.getElementById("life_result").innerHTML = "Yummy, sweets! Health restored, current LP/XP:";
+                document.getElementById("xp_result").innerHTML = profilemodel.getProfile[0].xp + "XP";
+                document.getElementById("lp_result").innerHTML = profilemodel.getProfile[0].lp + "LP";
+                document.getElementById("result_data").style.display = "flex";
+                // TODO: Win icon
+                document.getElementById("result_icon").setAttribute("src", "res/icon/svg/eating.svg");
             }
+
+            //Clone the node to keep the button_action without the old, just used eventListener.
+            var clone = document.getElementById("button_action").cloneNode(true);
+            document.getElementById("button_action").parentNode.replaceChild(clone, document.getElementById("button_action"));
+
+            getMapObjects();
             getUser(); // Update profile info
             updateUserInfo();
+            show('result'); // Page loaded; show to user
         },
         error: function(error){
             console.error(error);
         }
-    });
+    });    
+
 };
 
 //Show page passed as argument
@@ -465,10 +489,6 @@ function show(pagename) {
     hidePages();
     document.getElementById(pagename).setAttribute("class", "d-inline");
     console.log(pagename)
-    if (pagename == "profile")
-        loadProfile();
-    if (pagename == "ranking")
-        loadRanking();
     if (pagename == 'mappage')
         map.resize(); // Investigate
 };
@@ -491,6 +511,8 @@ function loadProfile() {
 
     document.getElementById("user_lp").innerHTML = profilemodel.getProfile[0].lp;
     document.getElementById("user_xp").innerHTML = profilemodel.getProfile[0].xp;
+
+    show("profile");
 };
 
 //Updates user info on map
@@ -567,9 +589,11 @@ function loadRanking() {
                 div.append(span2);
                 document.getElementById("ranking_list").append(a);
             }
+            show("ranking");
         },
         error: function(error){
             console.error(error);
+            //alert("Could not retreive ranking.");
         }
     });
 };
@@ -641,3 +665,67 @@ function cameraCallback(imageData) {
 function cameraError(imageData) {
     console.log("ERROR: Could not retreive image.")
  }
+
+ function isStillAvailable(id){
+     // Check for mob
+     var check = 0;
+
+     for(i=0; i<mapobjectmodel.getMapObjects.length; i++) {
+        if (mapobjectmodel.getMapObjects[i].id == id) {
+            currentMapobject = mapobjectmodel.getMapObjects[i];        
+        }
+    }
+
+     $.ajax({
+        method: 'post',
+        url:"https://ewserver.di.unimi.it/mobicomp/mostri/getmap.php",
+        data: JSON.stringify({session_id :localStorage.getItem("session_id")}),
+        dataType: 'json',
+        success: function(result) {
+            console.log("Successful ajax isStillAvailable request");
+            let mapobjects = result.mapobjects;
+            for (i = 0; i < mapobjects.length; i++){
+                if (currentMapobject.id == mapobjects[i].id && currentMapobject.lat == mapobjects[i].lat && currentMapobject.lon == mapobjects[i].lon){
+                    check++;
+                    mapObjectResult(id)
+                }
+            }
+            
+            if (check == 0){
+                if (currentMapobject.type =="MO") {
+                    alert("Uh-oh! The monster has already been defeated.")
+                    show("mappage");
+                } else {
+                    alert("Uh-oh! The candy has alreaxdy been eaten.") 
+                    show("mappage");
+                }
+                var clone = document.getElementById("button_action").cloneNode(true);
+                document.getElementById("button_action").parentNode.replaceChild(clone, document.getElementById("button_action"));
+                getMapObjects();
+            }
+        },
+        complete: function(){
+
+        },
+        error: function(error){
+            console.error(error);
+        }
+    });
+
+ }
+
+ function checkConnection() {
+    var networkState = navigator.connection.type;
+ 
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI]     = 'WiFi connection';
+    states[Connection.CELL_2G]  = 'Cell 2G connection';
+    states[Connection.CELL_3G]  = 'Cell 3G connection';
+    states[Connection.CELL_4G]  = 'Cell 4G connection';
+    states[Connection.CELL]     = 'Cell generic connection';
+    states[Connection.NONE]     = 'No network connection';
+ 
+    return states[networkState];
+}

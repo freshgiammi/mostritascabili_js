@@ -65,7 +65,9 @@
 <body>
     <div class="app">
         <div id="splash" class="d-inline">
-            <div id="splashscreen"></div>
+            <div id="splashscreen">
+                <img class="my-4" src ="img/logo.png" id="splash_logo"/>
+            </div>
         </div>
         <div id="mappage" class="d-none">
             <div id='map'> 
@@ -75,10 +77,10 @@
                     <a class="nav-link active" style="color: white;" onclick="show('mappage')"><i class="material-icons">map</i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color: white;" onclick="show('profile')"><i class="material-icons">person</i></a>
+                        <a class="nav-link" style="color: white;" onclick="loadProfile()"><i class="material-icons">person</i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color: white;"onclick="show('ranking')"><i class="material-icons">insert_chart</i></a>
+                        <a class="nav-link" style="color: white;"onclick="loadRanking()"><i class="material-icons">insert_chart</i></a>
                     </li>
                 </ul>
             </div>
@@ -107,10 +109,10 @@
                 <a class="nav-link" style="color: white;" onclick="show('mappage')"><i class="material-icons">map</i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" style="color: white;" onclick="show('profile')"><i class="material-icons">person</i></a>
+                    <a class="nav-link active" style="color: white;" onclick="loadProfile()"><i class="material-icons">person</i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white;" onclick="show('ranking')"><i class="material-icons">insert_chart</i></a>
+                    <a class="nav-link" style="color: white;" onclick="loadRanking()"><i class="material-icons">insert_chart</i></a>
                 </li>
             </ul>
             
@@ -160,10 +162,10 @@
                 <a class="nav-link" style="color: white;" onclick="show('mappage')"><i class="material-icons">map</i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white;" onclick="show('profile')"><i class="material-icons">person</i></a>
+                    <a class="nav-link" style="color: white;" onclick="loadProfile()"><i class="material-icons">person</i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" style="color: white;" onclick="show('ranking')"><i class="material-icons">insert_chart</i></a>
+                    <a class="nav-link active" style="color: white;" onclick="loadRanking()"><i class="material-icons">insert_chart</i></a>
                 </li>
             </ul>
         </div>
@@ -171,20 +173,40 @@
             <div class="container p-4">
 
                 <div class="row justify-content-center mt-3">
-                    <img class="rounded-circle img-fluid img-thumbnail w-50 mt-2" src="" id="obj_image"/>
+                    <img class="img-circle mt-2" src="" id="obj_image"/>
                 </div>
 
-                <div class="row justify-content-center mt-3">
+                <div class="row justify-content-center mt-4">
                     <h1 class="text-center font-weight-bold" id="obj_name"></h1>
                 </div>
 
-                <div class="row justify-content-around align-items-center my-5">
+                <div class="row justify-content-around align-items-center mt-5">
                     <div class="col text-center p-1">
-                        <h3 class="text-center" id="obj_size"></h3>
+                        <h4 class="text-center" id="obj_size"></h4>
                     </div> 
                 </div>
 
-                <div class="row justify-content-center">
+                <div class="row justify-content-around mx-5">
+                    <div class="col text-center m-3 p-1">
+                        <span style="color: white;" id="result_lp_field" class="align-middle mx-1"></span>
+                    </div> 
+                    <div class="col text-center m-3 p-1">
+                        <span style="color: white;" class="align-middle mx-1">XP Gain</span>
+                    </div> 
+                </div>
+                <div id="user_data" class="mx-5 mt-1"> 
+                    <div class="row justify-content-around">
+                        <div class="col text-center m-3 p-1">
+                            <span class="align-middle mx-1" id="obj_lp"></span>
+                        </div> 
+                        <div style="border-left: 1px solid gray;"class="my-4"></div> 
+                        <div class="col text-center m-3 p-1">
+                            <span class="align-middle mx-1" id="obj_xp"></span>
+                        </div> 
+                    </div>
+                </div>
+
+                <div class="row justify-content-center my-3">
                     <h5 class="text-center font-weight-bold" id="obj_fight"></h5>
                 </div>
 
@@ -196,13 +218,14 @@
         </div>
         <div id="result" class="d-none">
             <div class="container p-4">
+
                 <div class="row justify-content-center mt-3">
                     <div class="col text-center mx-3">
-                        <h2 id="life_result">You died/You survived/You grab this candy</h2>
+                        <h3 id="life_result">You died/You survived/You grab this candy</h3>
                     </div>
                 </div>
 
-                <div class="row justify-content-around my-5">
+                <div id="result_data" class="row justify-content-around my-5">
                     <div class="col text-center">
                         <h3 id="lp_result">LP</h3>
                     </div>
@@ -210,12 +233,18 @@
                         <h3 id="xp_result">XP</h3>
                     </div> 
                 </div>
+                <div class="row justify-content-center mt-3">
+                    <div class="col text-center mx-3">
+                        <img src="" id="result_icon">
+                    </div>
+                </div>
 
                 <div class="row justify-content-center mt-3">
                     <div class="col text-center mx-3">
                         <button type="button" style="margin: 13px;" class="btn btn-lg btn-raised btn-secondary" onclick="show('mappage')">Go back</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
