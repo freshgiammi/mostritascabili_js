@@ -8,41 +8,48 @@
   },
   "installed_plugins": {
     "cordova-plugin-battery-status": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     },
     "cordova-plugin-camera": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     },
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     },
     "cordova-plugin-dialogs": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
-    },
-    "cordova-plugin-geolocation": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
-    },
-    "cordova-plugin-globalization": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
-    },
-    "cordova-plugin-inappbrowser": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
-    },
-    "cordova-plugin-media-capture": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
-    },
-    "cordova-plugin-network-information": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
-    },
-    "cordova-plugin-vibration": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
-    },
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     },
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "com.phonegap.helloworld"
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-globalization": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-media-capture": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    }
+  }
 }

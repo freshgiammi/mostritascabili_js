@@ -276,7 +276,10 @@ function mapUpdater(){
     let mapobjects = mapobjectmodel.getMapObjects;
     //console.log(currentMarkers.length);
     if (currentMarkers.length != 0){
-            currentMarkers = [];
+        for (var i = currentMarkers.length - 1; i >= 0; i--) {
+            currentMarkers[i].remove();
+        }
+        currentMarkers = [];
         console.log("Updating markers")
     }
 
@@ -635,10 +638,9 @@ function changeProfilePic(){
 }
 
 function cameraCallback(imageData) {
-    var fileSize = Math.floor((4 * Math.ceil((imageData.length / 3))*0.5624896334383812)/1000);
-    if (fileSize < 100){
-        console.log("Selected image has a filesize of "+fileSize+" kb.")
-        var image = document.getElementById("user_image");
+    if(imageData.length >= 137000){
+        alert("The image you picked is too big! Please select an image smaller than 100kb.");
+    }else{
         // AJAX: Set new ProfilePic
         $.ajax({
             method: 'post',
@@ -650,15 +652,15 @@ function cameraCallback(imageData) {
             },
             complete: function(){
                 getUser(); // Updates model
+                var image = document.getElementById("user_image");
                 image.src = "data:image/jpeg;base64," +imageData;
             },
             error: function(error){
+                console.log("ERROR: Image too big, has a filesize bigger than of 100kb.")
+                alert("The image you picked is too big! Please select an image smaller than 100kb.");
                 console.error(error);
             }
         });
-    } else {
-        console.log("ERROR: Image too big, has a filesize of "+fileSize+" kb.")
-        alert("The image you picked is too big! Please select an image smaller than 100kb.");
     }
  }
 

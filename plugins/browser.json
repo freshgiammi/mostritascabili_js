@@ -42,6 +42,9 @@
     },
     "cordova-plugin-file": {
       "PACKAGE_NAME": "com.phonegap.helloworld"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     }
   },
   "dependent_plugins": {
