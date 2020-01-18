@@ -100,6 +100,10 @@ var profilemodel = new ProfileModel();
 var map = 0;
 var currentMarkers = [];
 var coord = 0;
+var options = {
+    enableHighAccuracy: true,
+    maximumAge: 3000
+};
  
 // Functions
 var app = {
@@ -119,32 +123,35 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        window.addEventListener("orientationchange", function(){
-        });
-
         if (checkConnection() == 'No network connection'){
             alert("You're not connected to the internet! Mostri Tascabili requires an active network connection.");
-            //navigator.app.exitApp(); //Close App.
+            navigator.app.exitApp(); //Close App.
         }        
         
         // USED FOR MOBILE
         //localStorage.setItem('session_id', 'VkCzzcwmJRYCHd3v'); 
-        if (navigator.geolocation){
-            var options = {
-                enableHighAccuracy: true,
-                maximumAge: 3000
-              };
-            var error = function(err){console.warn(`ERROR(${err.code}): ${err.message}`);} 
-            navigator.geolocation.getCurrentPosition(success_pos,error,options);
-            navigator.geolocation.watchPosition(success_pos,error,options) // Get first location and load map
-        } else {
-            // Handle
+        var permissions = cordova.plugins.permissions;
+        permissions.requestPermission(permissions.ACCESS_FINE_LOCATION, success, error);
+            
+        function error() { //Permission not given, alert and close app.
+            alert("Mostri Tascabili requires you to allow GPS permissions in order to work!")
+            if (alert != null)
+                navigator.app.exitApp();
         }
-        if (localStorage.getItem("session_id") == null ) {
-            getSessionId(); // Itself calls getUser() and mapLoader() to avoid synchronization issues
-        } else {
-            getUser();
-            mapLoader(); //Loads map markers
+            
+        function success(status) { //Permission given: continue app initialization
+            if( !status.hasPermission ) 
+                error();
+            else {
+                navigator.geolocation.getCurrentPosition(success_pos,error_pos,options);
+                navigator.geolocation.watchPosition(success_pos,error_pos,options) // Get first location and load map
+                if (localStorage.getItem("session_id") == null ) {
+                    getSessionId(); // Itself calls getUser() and mapLoader() to avoid synchronization issues
+                } else {
+                    getUser();
+                    mapLoader(); //Loads map markers
+                }
+            }
         }
     }
 };
@@ -154,8 +161,11 @@ function success_pos(pos){
     // DEBUG LOCATION: Spawns hell on emulator logcat
     //console.log("Latitude: "+coord.latitude);
     //console.log("Latitude: "+coord.longitude);
-
 }
+
+function error_pos(err){
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+} 
 
 //Load map: run only on app start
 function mapLoader(){
@@ -188,7 +198,7 @@ function mapLoader(){
     document.getElementById("splash").setAttribute("class", "d-none"); 
     document.getElementById("mappage").setAttribute("class", "d-inline"); 
     map.resize(); // MApBox has issues rendering while div is hiddne: Resize to show correct height and width
-    setInterval( function() { getMapObjects(map); }, 60000); // Update map every 60 seconds
+    setInterval( function() { getMapObjects(map); }, 3000); // Update map every 60 seconds
 };
 
 //Fetch session_id: add to localstorage
@@ -457,8 +467,7 @@ function mapObjectResult(id) {
                 // TODO: Death icon, hide XP & LP
                 document.getElementById("result_data").style.display = "none";            
                 document.getElementById("result_icon").setAttribute("src", "res/icon/svg/death.svg");
-            }
-            else if (mapobject.type =="MO") {
+            } else if (mapobject.type =="MO") {
                 document.getElementById("life_result").innerHTML = "Congratulations, you defeated the monster! You now have:";
                 document.getElementById("xp_result").innerHTML = profilemodel.getProfile[0].xp + "XP";
                 document.getElementById("lp_result").innerHTML = profilemodel.getProfile[0].lp + "LP";
@@ -606,10 +615,11 @@ function loadRanking() {
 
 function rename(){
     var rename = prompt("Please enter your name", profilemodel.getProfile[0].username);
-    if (rename.length > 15){
+    if (rename != null && rename.length > 15){
         alert("Username too long! You can only insert upt to 15 letters. You inserted "+rename.length+" letters.");
     } else {
         if (rename != null && rename != profilemodel.getProfile[0].username) {
+            console.log(rename)
             //AJAX Set Profile
             $.ajax({
                 method: 'post',

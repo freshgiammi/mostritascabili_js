@@ -45,6 +45,9 @@
     },
     "cordova-plugin-screen-orientation": {
       "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     }
   },
   "dependent_plugins": {
