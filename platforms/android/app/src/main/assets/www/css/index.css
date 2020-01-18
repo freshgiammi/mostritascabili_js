@@ -23,6 +23,14 @@ body{
     background-image: linear-gradient(#544858, rgba(0,0,0,0));
 }
 
+@media only screen and (min-height: 850px) {
+    #profile_row{
+        margin: auto;
+        height: -webkit-fill-available;
+    }
+}
+
+
 .c100{
     height: 3.4vh;
     width: 3.4vh;

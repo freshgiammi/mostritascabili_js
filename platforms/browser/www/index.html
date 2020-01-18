@@ -103,35 +103,44 @@
             </div>
         </div>
         <div id="profile" class="d-none">
-            <div class="col text-center" id="col">
-                <div class="row justify-content-center my-3">
-                    <h1 id="profile_title">My Profile</h1>
-                </div>
-                    <img class="img-circle my-4" onclick="changeProfilePic();" src="data:image/png;base64,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" id="user_image"/>
-                <div class="row justify-content-center my-3">
-                    <h2 id="user_username">USERNAME_FIELD</h2>
-                </div>
-                <div class="row justify-content-around mx-5">
-                    <div class="col text-center m-3 p-1">
-                        <span class="align-middle mx-1">LP</span>
-                    </div> 
-                    <div class="col text-center m-3 p-1">
-                        <span class="align-middle mx-1">XP</span>
-                    </div> 
-                </div>
-                <div id="user_data" class="mx-5 mt-1"> 
-                    <div class="row justify-content-around">
-                        <div class="col text-center m-3 p-1">
-                            <span class="align-middle mx-1" id="user_lp"></span>
-                        </div> 
-                        <div style="border-left: 1px solid gray;"class="my-4"></div> 
-                        <div class="col text-center m-3 p-1">
-                            <span class="align-middle mx-1" id="user_xp"></span>
-                        </div> 
+
+            <div class="row justify-content-md-center mx-5" id="profile_row">
+
+                <div class="col text-center my-auto" id="col">
+                    <div class="row justify-content-center my-3">
+                        <h1 id="profile_title">My Profile</h1>
+                    </div>
+                        <img class="img-circle my-4" onclick="changeProfilePic();" src="data:image/png;base64,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" id="user_image"/>
+                    <div class="row justify-content-center my-3">
+                        <h2 id="user_username">USERNAME_FIELD</h2>
                     </div>
                 </div>
-                <button type="button" class="btn btn-raised btn-danger my-5" id="button_rename" onclick="rename()">Change Username</button>
+
+                <div class="col text-center my-auto" id="col">
+                    <div class="row justify-content-center mx-5">
+                        <div class="col text-center m-3 p-1">
+                            <span class="align-middle mx-1">LP</span>
+                        </div> 
+                        <div class="col text-center m-3 p-1">
+                            <span class="align-middle mx-1">XP</span>
+                        </div> 
+                    </div>
+                    <div id="user_data" class="mx-5 mt-1"> 
+                        <div class="row justify-content-center">
+                            <div class="col text-center m-3 p-1">
+                                <span class="align-middle mx-1" id="user_lp"></span>
+                            </div> 
+                            <div style="border-left: 1px solid gray;"class="my-4"></div> 
+                            <div class="col text-center m-3 p-1">
+                                <span class="align-middle mx-1" id="user_xp"></span>
+                            </div> 
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-raised btn-danger my-5" id="button_rename" onclick="rename()">Change Username</button>
+                </div>
+
             </div>
+
 
             <!-- Bottom AppBar -->
             <ul class="nav nav-tabs fixed-bottom" style="background-color: #544858;">
@@ -145,8 +154,8 @@
                     <a class="nav-link" style="color: white;" onclick="loadRanking()"><i class="material-icons">insert_chart</i></a>
                 </li>
             </ul>
-
         </div>
+
         <div id='ranking' class="d-none">
             <div class="container p-4">
                 <div class="row justify-content-center align-items-center mt-1 mb-3 d-flex">

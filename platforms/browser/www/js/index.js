@@ -119,6 +119,9 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        window.addEventListener("orientationchange", function(){
+        });
+
         if (checkConnection() == 'No network connection'){
             alert("You're not connected to the internet! Mostri Tascabili requires an active network connection.");
             //navigator.app.exitApp(); //Close App.

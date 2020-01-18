@@ -7,5 +7,6 @@
   "description": "Hello World sample application that responds to the deviceready event.",
   "author": "PhoneGap Team",
   "icons": [],
+  "orientation": "landscape",
   "start_url": "index.html"
 }
