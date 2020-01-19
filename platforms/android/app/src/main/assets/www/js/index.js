@@ -104,6 +104,7 @@ var options = {
     enableHighAccuracy: true,
     maximumAge: 3000
 };
+var mapUpdaterTimer = 0;
  
 // Functions
 var app = {
@@ -117,6 +118,8 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('pause', this.onPause, false);
+        document.addEventListener("resume", this.onResume, false);
     },
     // deviceready Event Handler
     //
@@ -153,6 +156,14 @@ var app = {
                 }
             }
         }
+    },
+    onPause: function(){
+        console.log("Device entered onPause state")
+        clearInterval(mapUpdaterTimer);
+    },
+    onResume: function(){
+        console.log("Device entered onResume state")
+        mapUpdaterTimer = setInterval( function() { getMapObjects(map); }, 3000); // Update map every 60 seconds
     }
 };
 
@@ -198,7 +209,7 @@ function mapLoader(){
     document.getElementById("splash").setAttribute("class", "d-none"); 
     document.getElementById("mappage").setAttribute("class", "d-inline"); 
     map.resize(); // MApBox has issues rendering while div is hiddne: Resize to show correct height and width
-    setInterval( function() { getMapObjects(map); }, 3000); // Update map every 60 seconds
+    mapUpdaterTimer = setInterval( function() { getMapObjects(map); }, 3000); // Update map every 60 seconds
 };
 
 //Fetch session_id: add to localstorage
