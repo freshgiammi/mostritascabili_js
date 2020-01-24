@@ -7,6 +7,9 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
+    },
     "cordova-plugin-battery-status": {
       "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     },
@@ -44,9 +47,6 @@
       "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
-    },
-    "cordova-plugin-android-permissions": {
       "PACKAGE_NAME": "com.freshgiammi.mostritascabili"
     }
   },

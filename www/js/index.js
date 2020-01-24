@@ -135,10 +135,8 @@ var app = {
         //localStorage.setItem('session_id', 'VkCzzcwmJRYCHd3v'); 
         var permissions = cordova.plugins.permissions;
         permissions.requestPermission(permissions.ACCESS_FINE_LOCATION, success, error);
-            
         function error() { //Permission not given, alert and close app.
-            alert("Mostri Tascabili requires you to allow GPS permissions in order to work!")
-            if (alert != null)
+            alert("Mostri Tascabili requires you to allow GPS permissions in order to work!");
                 navigator.app.exitApp();
         }
             
@@ -380,39 +378,33 @@ function mapObjectInfo(id) {
             document.getElementById("button_action").addEventListener('click', function() {
                 isStillAvailable(id);
             });
-            /*
+
             if (mapobject.type == "CA") {
                 if (areYouNearEnough(mapobject.lat, mapobject.lon)){
                     document.getElementById("obj_fight").innerHTML = "Wanna eat this candy?";
                     document.getElementById("button_action").innerHTML = "Eat!"
+                    document.getElementById("result_lp_field").innerHTML = "Potential LP Gain"
+                    document.getElementById("obj_xp").innerHTML = "0"; // Candies give no XP Gain.
                 } else {
                     document.getElementById("obj_fight").innerHTML = "You're too far from the candy! Get closer!";
                     document.getElementById("button_action").setAttribute('disabled', 'disabled');
                     document.getElementById("button_action").innerHTML = "Eat!"
+                    document.getElementById("result_lp_field").innerHTML = "Potential LP Gain"
+                    document.getElementById("obj_xp").innerHTML = "0"; // Candies give no XP Gain.
                 }
             } else {
                 if (areYouNearEnough(mapobject.lat, mapobject.lon)){
                     document.getElementById("obj_fight").innerHTML = "Wanna fight this monster?";
                     document.getElementById("button_action").innerHTML = "Fight!"
+                    document.getElementById("result_lp_field").innerHTML = "Potential LP Loss"
                 } else {
                     document.getElementById("obj_fight").innerHTML = "You're too far from the monster! Get closer!";
                     document.getElementById("button_action").setAttribute('disabled', 'disabled');
                     document.getElementById("button_action").innerHTML = "Fight!"
+                    document.getElementById("result_lp_field").innerHTML = "Potential LP Loss"
                 }
             }
-            */
 
-            //DEBUG: Disabled distance check
-        if (mapobject.type == "CA") {
-                document.getElementById("obj_fight").innerHTML = "Wanna eat this candy?";
-                document.getElementById("button_action").innerHTML = "Eat!"
-                document.getElementById("result_lp_field").innerHTML = "Potential LP Gain"
-                document.getElementById("obj_xp").innerHTML = "0"; // Candies give no XP Gain.
-        } else {
-            document.getElementById("obj_fight").innerHTML = "Wanna fight this monster?";
-            document.getElementById("button_action").innerHTML = "Fight!"
-            document.getElementById("result_lp_field").innerHTML = "Potential LP Loss"
-        }
         show('mapobjectinfo'); //Page loaded; show to user
         },
         error: function(error){
@@ -424,17 +416,17 @@ function mapObjectInfo(id) {
 function areYouNearEnough(lat, lon) {
     let lat1 = coord.latitude;
     let lon1 = coord.longitude;
-    if ((lat1 == lat) && (lon1 == lon)) {
-        return true;
-    } 
-    let theta = lon1 - lon;
-    let distance = Math.sin(toRadians(lat1)) * Math.sin(toRadians(lat)) + Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat)) * Math.cos(toRadians(theta));
-    distance = Math.acos(distance);
-    distance = toDegrees(distance);
-    distance = distance * 60 * 1.1515;
-    // Distanza in kilometri
-    distance = distance * 1.609344;
-    if (distance > 0.05) {
+
+    let R = 6372.8; //km
+    let dLat = toRadians(lat-lat1);  
+    let dLon = toRadians(lon-lon1);  
+    lat1 = toRadians(lat1);
+    lat = toRadians(lat);
+    let a = Math.pow(Math.sin(dLat/2),2) + Math.pow(Math.sin(dLon/2),2) * Math.cos(lat1) * Math.cos(lat);
+    let c = 2 * Math.asin(Math.sqrt(a))
+    let d = R * c; 
+
+    if (d > 0.05) {
         return false;
     }       
     return true;
@@ -443,11 +435,6 @@ function areYouNearEnough(lat, lon) {
 function toRadians(degrees) {
     var pi = Math.PI;
     return degrees * (pi/180);
-}
-
-function toDegrees(radians) {
-    var pi = Math.PI;
-    return 1/radians * (pi/180);
 }
 
 //Show result after fight/eat
